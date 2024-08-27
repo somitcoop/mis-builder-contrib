@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <!-- Plotly Configurations inheriting the report instance -->
+    <record model="ir.ui.view" id="mis_report_instance_view_form_inherited">
+        <field name="name">mis.report.instance.view.form</field>
+        <field name="inherit_id" ref="mis_builder.mis_report_instance_view_form"/>
+        <field name="model">mis.report.instance</field>
+        <field name="priority" eval="15" />
+        <field name="arch" type="xml">
+
+            <!-- Checkbox -->
+            <xpath expr="//group" position="after">
+                    <group>
+                        <group>
+                            <field name="show_plotly_chart"/>
+                        </group>
+                        <group>
+                        </group>
+                    </group>
+            </xpath>
+
+            <!-- Preview Button -->
+            <xpath expr="//div[@name='buttons']/button[@name='preview']" position="after">
+                <button
+                    type="object"
+                    name="preview_plotly"
+                    string="Preview Chart"
+                    icon="fa-bar-chart"
+                />
+            </xpath>
+
+            <!-- Notebook Page for configurations -->
+            <xpath expr="//notebook" position="inside">
+                <page
+                    string="Plotly"
+                    attrs="{'invisible': [('show_plotly_chart', '=', False)]}"
+                >
+                    <group>
+                        <field name="period_ids" nolabel="1" colspan="2" attrs="{'required': [('comparison_mode', '=', True)]}" context="{'default_report_instance_id': id}">
+                            <tree decoration-danger="not valid" create="False" edit="True">
+                                <field name="sequence" widget="handle"/>
+                                <field name="name"/>
+                                <field name="source"/>
+                                <field name="source_aml_model_id"/>
+                                <field name="date_from"/>
+                                <field name="date_to"/>
+                                <field name="use_in_plotly"/>
+                                <field name="valid" invisible="1"/>
+                            </tree>
+                        </field>
+                    </group>
+
+                    <group>
+                        <field name="plotly_kpi_ids" context="{'default_mis_report_instance_id': id}"/>
+                        <button name="action_plotly_add_all_kpi"/>
+
+                        <!-- <field
+                            name="plotly_chart"
+                            attrs="{'invisible': [('has_line_plotly', '=', False)]}"
+                        /> -->
+                        <field name="plotly_chart" widget="plotly_chart"/>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

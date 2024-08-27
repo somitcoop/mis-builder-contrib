@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record model="ir.ui.view" id="mis_report_plotly_style_view_tree">
+        <field name="name">mis.report.plotly.style.view.tree</field>
+        <field name="model">mis.report.plotly.style</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name" />
+            </tree>
+        </field>
+    </record>
+    <record id="mis_report_plotly_style_view_form" model="ir.ui.view">
+        <field name="name">mis.report.plotly.style.view.form</field>
+        <field name="model">mis.report.plotly.style</field>
+        <field name="arch" type="xml">
+            <form string="MIS Report Plotly Style">
+                <sheet>
+                    <group string="Style" col="2">
+                        <field name="name" />
+                    </group>
+                    <group string="General" col="4">
+                        <field name="type_graph_inherit" string="Graph Type inherit" />
+                        <field
+                            name="type_graph"
+                            attrs="{'invisible': [('type_graph_inherit', '=', True)]}"
+                        />
+                    </group>
+                    <group string="Color" col="4">
+                        <field name="color_inherit" />
+                        <field
+                            name="color"
+                            attrs="{'invisible': [('color_inherit', '=', True)]}"
+                            widget="color"
+                        />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record model="ir.actions.act_window" id="mis_report_plotly_style_view_action">
+        <field name="name">MIS Report Plotly Styles</field>
+        <field name="view_id" ref="mis_report_plotly_style_view_tree" />
+        <field name="res_model">mis.report.plotly.style</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <menuitem
+        id="mis_report_plotly_style_view_menu"
+        parent="mis_builder.mis_report_conf_menu"
+        name="MIS Report Plotly Styles"
+        action="mis_report_plotly_style_view_action"
+        sequence="23"
+    />
+</odoo>

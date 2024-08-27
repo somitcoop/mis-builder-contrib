@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record model="ir.ui.view" id="mis_report_instance_kpi_view_tree">
+        <field name="name">mis.report.instance.kpi.view.tree</field>
+        <field name="model">mis.report.instance.kpi</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name" />
+            </tree>
+        </field>
+    </record>
+    <record id="mis_report_instance_kpi_view_form" model="ir.ui.view">
+        <field name="name">mis.report.instance.kpi.view.form</field>
+        <field name="model">mis.report.instance.kpi</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group col="2">
+                        <field name="mis_report_instance_id"/>
+                    </group>
+                    <group col="2">
+                        <field
+                            name="kpi_id"
+                            attrs="{'invisible': [('mis_report_instance_id', '=', True)]}"
+                        />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

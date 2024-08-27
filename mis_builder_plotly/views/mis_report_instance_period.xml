@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <!-- Plotly Configurations for Periods of Instances -->
+    <record model="ir.ui.view" id="mis_report_instance_period_view_form_inherited">
+        <field name="name">mis.report.instance.period.view.form</field>
+        <field name="inherit_id" ref="mis_builder.mis_report_instance_period_view_form"/>
+        <field name="model">mis.report.instance.period</field>
+        <field name="priority" eval="15" />
+        <field name="arch" type="xml">
+
+            <!-- Checkbox -->
+            <xpath expr="//group[@name='fix']" position="inside">
+                <group>
+                    <field name="use_in_plotly" />
+                </group>
+            </xpath>
+
+        </field>
+    </record>
+</odoo>
