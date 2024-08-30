@@ -17,4 +17,22 @@
 
         </field>
     </record>
+
+    <record model="ir.ui.view" id="mis_report_instance_period_view_tree_plotly">
+        <field name="name">mis.report.instance.period.view.tree.plotly</field>
+        <field name="model">mis.report.instance.period</field>
+        <field name="domain">[('use_in_plotly', '=', True)]</field>
+        <field name="arch" type="xml">
+            <tree decoration-danger="not valid" create="False" delete="False" editable="top">
+                <field name="sequence" widget="handle" readonly="True"/>
+                <field name="name" readonly="True"/>
+                <field name="source" readonly="True"/>
+                <field name="source_aml_model_id" readonly="True"/>
+                <field name="date_from" readonly="True"/>
+                <field name="date_to" readonly="True"/>
+                <field name="use_in_plotly"/>
+                <field name="valid" invisible="1"/>
+            </tree>
+        </field>
+    </record>
 </odoo>

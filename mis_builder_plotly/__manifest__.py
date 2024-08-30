@@ -1,8 +1,8 @@
 # Copyright 2024-SomItCoop SCCL(<https://gitlab.com/somitcoop>)
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl.html).
 {
-    "name": "SomItCoop ODOO Cashflow",
-    "version": "16.0.0.1.0",
+    "name": "MIS Builder Plotly",
+    "version": "16.0.0.0.1",
     "depends": [
         "mis_builder",
         "web_widget_plotly_chart",

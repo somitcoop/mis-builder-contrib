@@ -113,3 +113,7 @@ class MisReportInstance(models.Model):
             "target": "current",
             "context": self.env.context,
         }
+
+    def action_plotly_add_all_kpis(self):
+        self.ensure_one()
+        return True

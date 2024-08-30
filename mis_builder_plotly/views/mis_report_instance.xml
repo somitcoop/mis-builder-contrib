@@ -28,6 +28,11 @@
                     icon="fa-bar-chart"
                 />
             </xpath>
+            
+            <!-- Add use_in_plotly field for the hardcoded tree view of periods -->
+            <xpath expr="//notebook[@name='column']/" position="inside">
+            </xpath>
+            
 
             <!-- Notebook Page for configurations -->
             <xpath expr="//notebook" position="inside">
@@ -36,29 +41,28 @@
                     attrs="{'invisible': [('show_plotly_chart', '=', False)]}"
                 >
                     <group>
-                        <field name="period_ids" nolabel="1" colspan="2" attrs="{'required': [('comparison_mode', '=', True)]}" context="{'default_report_instance_id': id}">
-                            <tree decoration-danger="not valid" create="False" edit="True">
-                                <field name="sequence" widget="handle"/>
-                                <field name="name"/>
-                                <field name="source"/>
-                                <field name="source_aml_model_id"/>
-                                <field name="date_from"/>
-                                <field name="date_to"/>
-                                <field name="use_in_plotly"/>
-                                <field name="valid" invisible="1"/>
-                            </tree>
-                        </field>
+                        <field
+                            name="period_ids"
+                            domain="[('use_in_plotly', '=', True)]"
+                            nolabel="1"
+                            colspan="2"
+                            view_id="mis_builder_plotly.mis_report_instance_period_view_tree_plotly"
+                            attrs="{'required': [('comparison_mode', '=', True)]}"
+                            context="{'view_id': 'mis_builder_plotly.mis_report_instance_period_view_tree_plotly'}"
+                        />
                     </group>
 
                     <group>
-                        <field name="plotly_kpi_ids" context="{'default_mis_report_instance_id': id}"/>
-                        <button name="action_plotly_add_all_kpi"/>
-
-                        <!-- <field
-                            name="plotly_chart"
-                            attrs="{'invisible': [('has_line_plotly', '=', False)]}"
-                        /> -->
-                        <field name="plotly_chart" widget="plotly_chart"/>
+                        <field
+                            name="plotly_kpi_ids"
+                            context="{'default_mis_report_instance_id': id}"
+                        />
+                        <div colspan="1"/>
+                        <button
+                            name="action_plotly_add_all_kpis"
+                            type="object"
+                            string="Restore All KPIs"
+                        />
                     </group>
                 </page>
             </xpath>
