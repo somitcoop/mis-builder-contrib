@@ -30,7 +30,8 @@
             </xpath>
             
             <!-- Add use_in_plotly field for the hardcoded tree view of periods -->
-            <xpath expr="//notebook[@name='column']/" position="inside">
+            <xpath expr="//notebook//field[@name='period_ids']/tree" position="inside">
+                <field name="use_in_plotly"/>
             </xpath>
             
 
@@ -42,13 +43,11 @@
                 >
                     <group>
                         <field
-                            name="period_ids"
-                            domain="[('use_in_plotly', '=', True)]"
+                            name="use_in_plotly_period_ids"
                             nolabel="1"
                             colspan="2"
-                            view_id="mis_builder_plotly.mis_report_instance_period_view_tree_plotly"
                             attrs="{'required': [('comparison_mode', '=', True)]}"
-                            context="{'view_id': 'mis_builder_plotly.mis_report_instance_period_view_tree_plotly'}"
+                            context="{'tree_view_ref': 'mis_builder_plotly.mis_report_instance_period_view_tree_plotly'}"
                         />
                     </group>
 

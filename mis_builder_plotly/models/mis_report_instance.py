@@ -94,11 +94,17 @@ class MisReportInstance(models.Model):
         inverse_name="mis_report_instance_id",
     )
 
-    # plotly_bar_periods = fields.One2many(
-    #     'mis.report.instance.period',
-    #     inverse_name="inverse_chart_report_id",
-    #     string="Periods"
-    # )
+    use_in_plotly_period_ids = fields.One2many(
+        'mis.report.instance.period',
+        compute="_compute_use_in_plotly_period_ids",
+        store=False,
+    )
+    
+    @api.depends("period_ids.use_in_plotly")
+    def _compute_use_in_plotly_period_ids(self):
+        for record in self:
+            periods = record.period_ids.filtered('use_in_plotly')
+            record.use_in_plotly_period_ids = periods
 
     def preview_plotly(self):
         # Basically a duplication of the original preview method
