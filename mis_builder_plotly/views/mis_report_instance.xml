@@ -54,8 +54,19 @@
                     <group>
                         <field
                             name="plotly_kpi_ids"
-                            context="{'default_mis_report_instance_id': id}"
-                        />
+                            context="{'default_mis_report_instance_id': id}">
+                            <tree
+                                editable="bottom"
+                                create="1"
+                                write="1"
+                                limit="15"
+                            >
+                                <field name="mis_report_instance_id" invisible="1"/>
+                                <field name="report_kpi_ids" invisible="1"/>
+                                <field name="kpi_id" can_create="0"/>
+                                <field name="kpi_style_id"/>
+                            </tree>
+                        </field>
                         <div colspan="1"/>
                         <button
                             name="action_plotly_add_all_kpis"

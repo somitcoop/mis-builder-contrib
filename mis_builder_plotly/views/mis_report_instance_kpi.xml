@@ -1,14 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <record model="ir.ui.view" id="mis_report_instance_kpi_view_tree">
-        <field name="name">mis.report.instance.kpi.view.tree</field>
-        <field name="model">mis.report.instance.kpi</field>
-        <field name="arch" type="xml">
-            <tree>
-                <field name="name" />
-            </tree>
-        </field>
-    </record>
+    
     <record id="mis_report_instance_kpi_view_form" model="ir.ui.view">
         <field name="name">mis.report.instance.kpi.view.form</field>
         <field name="model">mis.report.instance.kpi</field>
@@ -16,12 +8,22 @@
             <form>
                 <sheet>
                     <group col="2">
-                        <field name="mis_report_instance_id"/>
-                    </group>
-                    <group col="2">
+                        <field
+                            name="mis_report_instance_id"
+                            invisible="1"
+                            options="{'no_create': True, 'no_open': True}"
+                        />
+                        <field name="report_kpi_ids" invisible="1"/>
                         <field
                             name="kpi_id"
+                            domain="[('id', 'in', report_kpi_ids)]"
+                            options="{'no_create': True, 'no_open': True}"
                             attrs="{'invisible': [('mis_report_instance_id', '=', True)]}"
+                        />
+                        <field
+                            name="kpi_style_id"
+                            readonly="True"
+                            attrs="{'invisible': [('kpi_id', '=', True)]}"
                         />
                     </group>
                 </sheet>
