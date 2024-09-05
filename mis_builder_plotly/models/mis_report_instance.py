@@ -36,9 +36,10 @@ class MisReportInstance(models.Model):
             fig = go.Figure()
 
             # retrieving each 'y' bar for each variable (kpi)
-            for variable_name in record.report_id.kpi_ids.mapped('name'): # this loop will be split in two (Bar and Line) according to *Their own selected KPIs *
+            # TODO: usar record.plotly_kpi_ids para el for loop
+            for kpi in record.report_id.kpi_ids.mapped('name'): # this loop will be split in two (Bar and Line) according to *Their own selected KPIs *
                 current_row = list(filter(
-                    lambda row: row.get('row_id')==variable_name,
+                    lambda row: row.get('row_id')==kpi.name,
                     computed_matrix.get('body')
                 ))[0]
                 cells = list(filter(
@@ -48,20 +49,19 @@ class MisReportInstance(models.Model):
                 y_values = list(map(lambda cell: cell.get('val') or 0, cells))
 
                 #adding them to the plot
+                # TODO: switch  kpi.plotly_style_id.type_graph == 'bar' ...'scatter'
                 fig.add_trace(go.Bar(
-                    name=variable_name,
+                    name=kpi.name,
                     x=x,
                     y=y_values,
                 ))
                 fig.add_trace(go.Line(
-                    name=variable_name,
+                    name=kpi.name,
                     x=x,
                     y=y_values,
                 ))
 
-            fig.update_layout(barmode='relative', title_text='CashFlow')
-            # fig.update_traces(marker_cornerradius="10%", selector=dict(type='bar'))
-            # fig.update_traces(overwrite=True, marker={"cornerradius": '10%'})
+            fig.update_layout(barmode='relative', title_text='CashFlow') # TODO: cambiar el title al nombre del propio report instance
 
             _logger.debug("Preview x&y:\n" + str(x) + "\n" + str(y_values))
             _logger.debug("Preview fig:\n" + str(fig))
@@ -121,5 +121,20 @@ class MisReportInstance(models.Model):
         }
 
     def action_plotly_add_all_kpis(self):
-        self.ensure_one()
-        return True
+        """
+        This action will add all the KPIs coming from the report_id
+        Though if there are already KPI's the list this will simply add all the REST on the bottom
+        """
+        kpi_ids = self.report_id.kpi_ids
+        existing_kpi_ids = self.mapped('plotly_kpi_ids.kpi_id')
+        ids = existing_kpi_ids.ids if existing_kpi_ids else []
+
+        for kpi in kpi_ids:
+            self.env['mis.report.instance.kpi'].create({
+                'mis_report_instance_id': self.id,
+                'kpi_id': kpi.id,
+                'kpi_style_id': kpi.kpi_id.plotly_style_id.id
+            })
+
+    def action_plotly_remove_all_kpis(self):
+        self.mapped('plotly_kpi_ids').unlink()

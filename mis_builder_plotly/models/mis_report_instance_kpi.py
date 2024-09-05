@@ -4,15 +4,6 @@ from odoo import models, fields, api, _
 class MisReportInstanceKpi(models.Model):
     _name = "mis.report.instance.kpi"
 
-    _sql_constraints = [
-        (
-            "unique_kpi_report_instance_combination",
-            "UNIQUE(mis_report_instance_id,kpi_id)",
-            _("Kpi must be unique per Report instance"),
-        )
-    ]
-
-
     mis_report_instance_id = fields.Many2one(
         'mis.report.instance',
         string="Report Instance",
@@ -28,7 +19,21 @@ class MisReportInstanceKpi(models.Model):
         ondelete="cascade",
         required=True
     )
+
     kpi_style_id = fields.Many2one(
         'mis.report.plotly.style',
-        related="kpi_id.plotly_style_id"
+        string="KPI Style",
+        store=True,
+        compute='_compute_kpi_style_id',
+        required=True
     )
+    
+
+    @api.depends('kpi_id')
+    @api.onchange('kpi_id')
+    def _compute_kpi_style_id(self):
+        for record in self:
+            if record.kpi_id:
+                record.kpi_style_id = record.kpi_id.plotly_style_id
+            else:
+                record.kpi_style_id = False

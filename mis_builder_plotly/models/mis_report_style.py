@@ -1,7 +1,7 @@
 from odoo import _, fields, models
 
 
-class MisReportKpiStyle(models.Model):
+class MisReportPlotlyStyle(models.Model):
     _name = "mis.report.plotly.style"
     _description = "MIS Report Style for Plotly"
 
