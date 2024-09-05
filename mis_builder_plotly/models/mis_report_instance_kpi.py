@@ -25,7 +25,8 @@ class MisReportInstanceKpi(models.Model):
         string="KPI Style",
         store=True,
         compute='_compute_kpi_style_id',
-        required=True
+        required=True,
+        readonly=False
     )
     
 

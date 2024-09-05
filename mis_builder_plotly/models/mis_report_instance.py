@@ -75,14 +75,6 @@ class MisReportInstance(models.Model):
         string="Add Chart preview",
         help="Shows the added possibility of previewing in a chart rather than in a table",
     )
-    has_bar_plotly = fields.Boolean(
-        name="Plot Bar chart",
-        default=False,
-    )
-    has_line_plotly = fields.Boolean(
-        name="Plot Line chart",
-        default=False,
-    )
     plotly_chart = fields.Text(
         string="Plotly Chart",
         compute=_compute_plotly_chart,
@@ -126,14 +118,12 @@ class MisReportInstance(models.Model):
         Though if there are already KPI's the list this will simply add all the REST on the bottom
         """
         kpi_ids = self.report_id.kpi_ids
-        existing_kpi_ids = self.mapped('plotly_kpi_ids.kpi_id')
-        ids = existing_kpi_ids.ids if existing_kpi_ids else []
 
         for kpi in kpi_ids:
             self.env['mis.report.instance.kpi'].create({
                 'mis_report_instance_id': self.id,
                 'kpi_id': kpi.id,
-                'kpi_style_id': kpi.kpi_id.plotly_style_id.id
+                'kpi_style_id': kpi.plotly_style_id.id
             })
 
     def action_plotly_remove_all_kpis(self):
