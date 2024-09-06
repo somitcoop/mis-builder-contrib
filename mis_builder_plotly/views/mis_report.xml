@@ -13,21 +13,4 @@
         </field>
     </record>
 
-    <!-- KPI -->
-    <record model="ir.ui.view" id="mis_report_view_kpi_form_inherited">
-        <field name="name">mis.report.view.kpi.form</field>
-        <field name="inherit_id" ref="mis_builder.mis_report_view_kpi_form"/>
-        <field name="model">mis.report.kpi</field>
-        <field name="arch" type="xml">
-
-            <field name="style_expression" position="after">
-                <field name="use_in_plotly" />
-                <field
-                    name="plotly_style_id"
-                    attrs="{'invisible': [('use_in_plotly', '=', False)]}"
-                />
-            </field>
-        </field>
-    </record>
-
 </odoo>

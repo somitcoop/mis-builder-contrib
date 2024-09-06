@@ -1,6 +1,7 @@
 from odoo import models, fields, api, _
-import plotly
+from odoo.exceptions import UserError
 import plotly.graph_objects as go
+import plotly
 import logging
 
 _logger = logging.getLogger(__name__)
@@ -20,11 +21,7 @@ class MisReportInstance(models.Model):
             periods_to_show = record.period_ids.filtered('use_in_plotly')
 
             if not periods_to_show:
-                record.plotly_chart = plotly.offline.plot(
-                    [{'x': [1, 2, 3], 'y': [2, 3, 4]}],
-                    include_plotlyjs=False,
-                    output_type='div'
-                )
+                # TODO: raise a UserError
                 continue
             x_labels = periods_to_show.mapped('name')
             # retrieving the 'x' periods: all the header cols that are present in the plotly_bar_periods
@@ -32,38 +29,45 @@ class MisReportInstance(models.Model):
                 lambda column: column.get('label') in x_labels,
                 computed_matrix.get('header')[0].get('cols')
             ))
-            x = list(map(lambda col: col.get('label'), x_raw))
+            x_values = list(map(lambda col: col.get('label'), x_raw))
             fig = go.Figure()
 
             # retrieving each 'y' bar for each variable (kpi)
-            # TODO: usar record.plotly_kpi_ids para el for loop
-            for kpi in record.report_id.kpi_ids.mapped('name'): # this loop will be split in two (Bar and Line) according to *Their own selected KPIs *
-                current_row = list(filter(
+            for kpi in record.plotly_kpi_ids: # this loop will be split in two (Bar and Line) according to *Their own selected KPIs *
+                kpi_row = list(filter(
                     lambda row: row.get('row_id')==kpi.name,
                     computed_matrix.get('body')
                 ))[0]
                 cells = list(filter(
                     lambda val: val.get('drilldown_arg').get('period_id') in periods_to_show.ids,
-                    current_row.get('cells')
+                    kpi_row.get('cells')
                 ))
                 y_values = list(map(lambda cell: cell.get('val') or 0, cells))
 
-                #adding them to the plot
-                # TODO: switch  kpi.plotly_style_id.type_graph == 'bar' ...'scatter'
-                fig.add_trace(go.Bar(
-                    name=kpi.name,
-                    x=x,
-                    y=y_values,
-                ))
-                fig.add_trace(go.Line(
-                    name=kpi.name,
-                    x=x,
-                    y=y_values,
-                ))
 
-            fig.update_layout(barmode='relative', title_text='CashFlow') # TODO: cambiar el title al nombre del propio report instance
+                if kpi.plotly_style_id.graph_type == 'bar':
+                    graph_object = go.Bar(
+                        name=kpi.name,
+                        x=x_values,
+                        y=y_values,
+                        marker_color=kpi.plotly_style_id.color,
+                    )
+                elif kpi.plotly_style_id.graph_type == 'scatter':
+                    graph_object = go.Scatter(
+                        name=kpi.name,
+                        x=x_values,
+                        y=y_values,
+                        marker_color=kpi.plotly_style_id.color,
+                    )
+                else:
+                    raise UserError(f"The graph type {str(kpi.plotly_style_id.graph_type)} defined on KPI {str(kpi.description)} is not supported.")
 
-            _logger.debug("Preview x&y:\n" + str(x) + "\n" + str(y_values))
+                fig.add_trace(graph_object)
+
+            fig.update_layout(barmode='relative') # TODO: check whether to add relative
+            fig.update_layout(title_text='CashFlow') # TODO: cambiar el title al nombre del propio report instance
+
+            _logger.debug("Preview x&y:\n" + str(x_values) + "\n" + str(y_values))
             _logger.debug("Preview fig:\n" + str(fig))
             record.plotly_chart = plotly.offline.plot(
                 fig,

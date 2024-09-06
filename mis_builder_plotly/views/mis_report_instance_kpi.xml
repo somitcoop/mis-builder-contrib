@@ -21,7 +21,7 @@
                             attrs="{'invisible': [('mis_report_instance_id', '=', True)]}"
                         />
                         <field
-                            name="kpi_style_id"
+                            name="plotly_style_id"
                             readonly="True"
                             attrs="{'invisible': [('kpi_id', '=', True)]}"
                         />

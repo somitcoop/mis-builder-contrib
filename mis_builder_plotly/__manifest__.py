@@ -24,6 +24,7 @@
         "views/mis_report_instance_period.xml",
         "views/mis_report_style.xml",
         "views/mis_report.xml",
+        "views/mis_report_kpi.xml",
     ],
     "application": False,
     "installable": True,

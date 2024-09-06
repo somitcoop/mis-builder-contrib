@@ -13,6 +13,10 @@ class MisReportInstanceKpi(models.Model):
         'mis.report.kpi',
         related="mis_report_instance_id.report_id.kpi_ids"
     )
+    name = fields.Char(
+        string="Name",
+        related="kpi_id.name"
+    )
     kpi_id = fields.Many2one(
         'mis.report.kpi',
         domain="[('id', 'in', report_kpi_ids)]",
@@ -20,11 +24,11 @@ class MisReportInstanceKpi(models.Model):
         required=True
     )
 
-    kpi_style_id = fields.Many2one(
+    plotly_style_id = fields.Many2one(
         'mis.report.plotly.style',
-        string="KPI Style",
+        string="Plotly Style",
         store=True,
-        compute='_compute_kpi_style_id',
+        compute='_compute_plotly_style_id',
         required=True,
         readonly=False
     )
@@ -32,9 +36,6 @@ class MisReportInstanceKpi(models.Model):
 
     @api.depends('kpi_id')
     @api.onchange('kpi_id')
-    def _compute_kpi_style_id(self):
+    def _compute_plotly_style_id(self):
         for record in self:
-            if record.kpi_id:
-                record.kpi_style_id = record.kpi_id.plotly_style_id
-            else:
-                record.kpi_style_id = False
+            record.plotly_style_id = record.kpi_id.plotly_style_id
