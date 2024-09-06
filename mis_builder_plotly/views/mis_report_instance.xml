@@ -41,68 +41,43 @@
                     string="Plotly"
                     attrs="{'invisible': [('show_plotly_chart', '=', False)]}"
                 >
-                    <group col="4">
-                        <label for="use_in_plotly_period_ids"/>
-                        <field
-                            nolabel="1"
-                            name="use_in_plotly_period_ids"
-                            attrs="{'required': [('comparison_mode', '=', True)]}"
-                            context="{'tree_view_ref': 'mis_builder_plotly.mis_report_instance_period_view_tree_plotly'}"
-                        />
-                        <hr colspan="3"/>
-                        <label for="plotly_kpi_ids"/>
-                        <field
-                            nolabel="1"
-                            name="plotly_kpi_ids"
-                            context="{'default_mis_report_instance_id': id}">
-                            <tree
-                                editable="bottom"
-                                create="1"
-                                write="1"
-                                limit="15"
-                            >
-                                <field name="mis_report_instance_id" invisible="1"/>
-                                <field name="report_kpi_ids" invisible="1"/>
-                                <field name="kpi_id" can_create="0"/>
-                                <field name="plotly_style_id" can_create="1"/>
-                            </tree>
-                        </field>
-                        <div colspan="2"/>
-                        <button
-                            name="action_plotly_add_all_kpis"
-                            type="object"
-                            string="Add all KPIs"
-                        />
-                        <button
-                            name="action_plotly_remove_all_kpis"
-                            type="object"
-                            string="Remove all KPIs"
-                        />
-                    </group>
-
-<!-- 
                     <group>
-                        <group>
-                            <field name="date"/>
+                        <group colspan="3" col="2">
+                            <field
+                                name="use_in_plotly_period_ids"
+                                attrs="{'required': [('comparison_mode', '=', True)]}"
+                                context="{'tree_view_ref': 'mis_builder_plotly.mis_report_instance_period_view_tree_plotly'}"
+                            />
+                            <field
+                                name="plotly_kpi_ids"
+                                context="{'default_mis_report_instance_id': id}">
+                                <tree
+                                    editable="bottom"
+                                    create="1"
+                                    write="1"
+                                    limit="15"
+                                >
+                                    <field name="mis_report_instance_id" invisible="1"/>
+                                    <field name="report_kpi_ids" invisible="1"/>
+                                    <field name="kpi_id" can_create="0"/>
+                                    <field name="plotly_style_id" can_create="1"/>
+                                </tree>
+                            </field>
+                            <div colspan="1"/>
+                            <div>
+                                <button
+                                    name="action_plotly_add_all_kpis"
+                                    type="object"
+                                    string="Add all KPIs"
+                                />
+                                <button
+                                    name="action_plotly_remove_all_kpis"
+                                    type="object"
+                                    string="Remove all KPIs"
+                                />
+                            </div>
                         </group>
-                        <group>
-
-                        </group>
-                        <field name="period_ids" nolabel="1" colspan="4" attrs="{'required': [('comparison_mode', '=', True)]}" context="{'default_report_instance_id': id}">
-                            <tree decoration-danger="not valid">
-                                <field name="sequence" widget="handle"/>
-                                <field name="name"/>
-                                <field name="source"/>
-                                <field name="source_aml_model_id"/>
-                                <field name="date_from"/>
-                                <field name="date_to"/>
-                                <field name="valid" invisible="1"/>
-                            </tree>
-                        </field>
-                    </group> -->
-
-
-
+                    </group>
                 </page>
             </xpath>
         </field>
