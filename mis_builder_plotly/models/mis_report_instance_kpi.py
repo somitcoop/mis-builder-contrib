@@ -17,6 +17,10 @@ class MisReportInstanceKpi(models.Model):
         string="Name",
         related="kpi_id.name"
     )
+    description = fields.Char(
+        string="Description",
+        related="kpi_id.description"
+    )
     kpi_id = fields.Many2one(
         'mis.report.kpi',
         domain="[('id', 'in', report_kpi_ids)]",

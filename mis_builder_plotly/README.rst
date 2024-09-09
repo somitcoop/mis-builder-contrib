@@ -61,6 +61,7 @@ Contributors
 -  `SomIT SCCL <https://somit.coop>`_:
 
       -  José Robles <jose.robles@somit.coop>
+      -  Enrico Stano <enrico.stano@somit.coop>
 
 Maintainers
 ===========

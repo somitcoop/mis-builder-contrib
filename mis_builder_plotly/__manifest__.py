@@ -15,6 +15,7 @@
     "website": "https://gitlab.com/somitcoop",
     "license": "AGPL-3",
     "summary": """
+        Adds support for Plotly charts within MIS reports.
     """,
     "data": [
         "security/ir.model.access.csv",

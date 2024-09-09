@@ -21,8 +21,8 @@ class MisReportInstance(models.Model):
             periods_to_show = record.period_ids.filtered('use_in_plotly')
 
             if not periods_to_show:
-                # TODO: raise a UserError
-                continue
+                raise UserError("There are no periods to show for Plotly.")
+
             x_labels = periods_to_show.mapped('name')
             # retrieving the 'x' periods: all the header cols that are present in the plotly_bar_periods
             x_raw = list(filter(
@@ -47,14 +47,14 @@ class MisReportInstance(models.Model):
 
                 if kpi.plotly_style_id.graph_type == 'bar':
                     graph_object = go.Bar(
-                        name=kpi.name,
+                        name=kpi.description,
                         x=x_values,
                         y=y_values,
                         marker_color=kpi.plotly_style_id.color,
                     )
                 elif kpi.plotly_style_id.graph_type == 'scatter':
                     graph_object = go.Scatter(
-                        name=kpi.name,
+                        name=kpi.description,
                         x=x_values,
                         y=y_values,
                         marker_color=kpi.plotly_style_id.color,
@@ -64,8 +64,8 @@ class MisReportInstance(models.Model):
 
                 fig.add_trace(graph_object)
 
-            fig.update_layout(barmode='relative') # TODO: check whether to add relative
-            fig.update_layout(title_text='CashFlow') # TODO: cambiar el title al nombre del propio report instance
+            fig.update_layout(barmode='relative')
+            fig.update_layout(title_text=record.name)
 
             _logger.debug("Preview x&y:\n" + str(x_values) + "\n" + str(y_values))
             _logger.debug("Preview fig:\n" + str(fig))

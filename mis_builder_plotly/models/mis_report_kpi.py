@@ -8,7 +8,7 @@ class MisReportKpi(models.Model):
         string="Use in Plotly",
         help="This will make this KPI available for the Report Instance in the Plotly Tab",
     )
-    plotly_style_id = fields.Many2one(
-        string="Plotly Style",
+    default_plotly_style_id = fields.Many2one(
+        string="Default Plotly Style",
         comodel_name="mis.report.plotly.style"
     )
