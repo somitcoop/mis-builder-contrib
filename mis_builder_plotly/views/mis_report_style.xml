@@ -23,40 +23,24 @@
                     <group string="General">
                         <group>
                             <field
-                                name="graph_type_inherit"
-                                string="Graph Type inherit"
+                                name="graph_type"
+                            />
+                        </group>
+                    </group>
+                    <group string="Color">
+                        <group>
+                            <field
+                                name="color"
+                                colspan="2"
                             />
                         </group>
                         <group>
                             <field
-                                name="graph_type"
-                                attrs="{'invisible': [('graph_type_inherit', '=', True)]}"
+                                name="color"
+                                nolabel="1"
+                                widget="color"
                             />
                         </group>
-                    </group>
-                    <group string="Color" col="8">
-                        <group>
-                            <field name="color_inherit"/>
-                        </group>
-                        <div colspan="4">
-                            <group>
-                                <group>
-                                    <field
-                                        name="color"
-                                        colspan="2"
-                                        attrs="{'invisible': [('color_inherit', '=', True)]}"
-                                    />
-                                </group>
-                                <group>
-                                    <field
-                                        name="color"
-                                        nolabel="1"
-                                        attrs="{'invisible': [('color_inherit', '=', True)]}"
-                                        widget="color"
-                                    />
-                                </group>
-                            </group>
-                        </div>
                     </group>
                 </sheet>
             </form>
